@@ -1,7 +1,8 @@
 function ConfigFile(){
 	return {
 		port: 3000,
-		host: "localhost"
+		host: "localhost",
+		mongo: "Mongo URL"
 	}
 }
 
