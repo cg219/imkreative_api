@@ -3,7 +3,9 @@ function APIServer(){
 	this.app = this.express();
 	this.bodyParser = require("body-parser");
 	this.http = require("http");
-	this.config = require("./config/config.js");
+	this.config = require("./config/config.js")
+
+	this.app.use(this.bodyParser.json());
 }
 
 APIServer.prototype.listen = function(port, host) {
