@@ -1,11 +1,12 @@
 var User = require("../../models/user");
 var mongoose = require("mongoose");
-var config = require("../config/config");
+var config = require("../../../config/config");
 
+module.exports = UserRoute;
 
 function UserRoute (router) {
 
-	router.post("login", function(req, res){
+	router.post("/login", function(req, res){
 		var username = req.body.username;
 		var password = req.body.password;
 
@@ -13,7 +14,12 @@ function UserRoute (router) {
 
 		User.findUser(username, password, function(err, user){
 			if(err){
-
+				res.json({
+					error: true,
+					message: "Something Went Wrong"
+				});
+				mongoose.disconnect();
+				return;
 			}
 
 			res.json(user);
@@ -21,7 +27,9 @@ function UserRoute (router) {
 		})
 	})
 
-	router.post("register", function(req, res){
+	router.post("/register", function(req, res){
+		console.log("Hit Register");
+
 		var username = req.body.username;
 		var password = req.body.password;
 
@@ -30,8 +38,9 @@ function UserRoute (router) {
 		User.findOne({
 			username: username
 		}, function(err, user){
-			if(user.length > 0){
-				req.json({});
+			if(user){
+				res.json({});
+				mongoose.disconnect();
 				return;
 			}
 
@@ -41,13 +50,18 @@ function UserRoute (router) {
 			})
 
 			newUser.save(function(err, user, updated){
+				mongoose.disconnect();
+
 				if(err){
-					req.json({})
+					res.json({})
 					return;
 				}
 
-				req.json(user);
+				console.log(user);
+				res.json(user);
 			})
 		})
 	})
+
+	return router;
 }

@@ -17,7 +17,7 @@ describe("User Suite", function(){
 	})
 
 	after(function(done){
-		newUser.remove(function(err, removed){
+		User.remove({username: newUser.username}, function(err, removed){
 			if(!err){
 				done();
 			}

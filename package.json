@@ -16,6 +16,7 @@
     "mongoose": "^3.8.25"
   },
   "devDependencies": {
+    "request": "^2.53.0",
     "should": "^5.2.0"
   }
 }

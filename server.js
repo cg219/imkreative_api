@@ -1,12 +1,22 @@
 function APIServer(){
+	this.init();
+}
+
+APIServer.prototype.init = function() {
 	this.express = require("express");
 	this.app = this.express();
 	this.bodyParser = require("body-parser");
 	this.http = require("http");
-	this.config = require("./config/config.js")
-
+	this.config = require("./config/config.js");
 	this.app.use(this.bodyParser.json());
-}
+	this.app.use(this.bodyParser.urlencoded({
+		extended: false
+	}));
+
+	this.userRoutes = require("./app/controllers/routes/user-routes")(this.express.Router());
+
+	this.app.use("/user", this.userRoutes);	
+};
 
 APIServer.prototype.listen = function(port, host) {
 	var self = this;
